@@ -1,0 +1,9 @@
+fastapi
+torch
+transformers
+numpy
+motor
+gtts
+speechrecognition
+uvicorn
+pymongo

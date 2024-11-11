@@ -1,0 +1,67 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Flask / FastAPI specific
+*.sqlite3
+*.db
+*.log
+*.pot
+*.mo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Temporary files
+*.swp
+*.bak
+*.tmp
+
+# Model weights (if you are not storing them in a separate folder)
+*.h5
+*.pth
+*.ckpt
+
+# Output folders (for predictions, results, etc.)
+outputs/
+uploads/
+
+!outputs/.gitkeep
+!uploads/.gitkeep
+
+# Environment variable files (e.g. for secrets, credentials)
+.env
+
+# Dependency lock files (you can include these if you're using specific versions)
+# If you're using `pip`'s requirements.txt, it's fine to include that file.
+# Pipenv lock
+Pipfile.lock
+
+# Coverage reports (from tools like pytest)
+*.coveragerc
+.coverage
+*.coverage
+nosetests.xml
+coverage.xml
+
+# IDEs and editors
+.vscode/
+.idea/
+*.iml
+
+# PyCharm
+.idea/
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db

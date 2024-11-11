@@ -78,6 +78,33 @@ The dataset consists of Kannada audio files focused on sandalwood cultivation:
 
 [Task 1 Details](./Task%201/README.md)
 
+### Task 2: Speech-based Question-Answering System
+
+- Allow users to ask questions via speech input.
+- Convert the spoken question to text using the ASR model.
+- Search the transcribed audio data for relevant answers.
+- Return the most relevant audio segment as the answer.
+
+#### Key Features:
+
+- Accurate answer retrieval from speech queries.
+- Efficient search and indexing of the transcribed corpus.
+- User-friendly query and response interface.
+
+#### Code:
+
+[Task 2 Folder](./Task%202/)
+
+#### More Details:
+
+[Task 2 Details](./Task%202/README.md)
+
+## Pipeline Architecture
+
+<div align="center" style="background:white">
+  <img src="./assets/Pipeline_Architecture.png" alt="Architecture Diagram" width="100%">
+</div>
+
 ## Technical Requirements
 
 - **Languages**: Python.
@@ -112,7 +139,6 @@ This project aims to document and provide access to indigenous knowledge of sand
 ## Project Links
 
 - [GitHub Repository](https://github.com/Shani-Sinojiya/SandalQuest.git)
-- [Youtube Video](https://www.youtube.com/watch?v=)
 
 ## References
 
