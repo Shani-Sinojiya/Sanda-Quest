@@ -55,6 +55,7 @@ backend/
 git clone https://github.com/Shani-Sinojiya/SandalQuest.git
 cd SandalQuest
 cd "Task 2"
+cd backend
 ```
 
 2. Install the required dependencies.
@@ -66,14 +67,13 @@ pip install -r requirements.txt
 3. Start the backend server.
 
 ```bash
-cd backend
 uvicorn app.main:app --reload
 ```
 
 ## Backend API Endpoints
 
 - **POST** `/predict`: Upload audio file and get the answer.
-- **GET** `/output/{filename}`: Download the generated audio file.
+- **GET** `/static/outputs{filename}`: Download the generated audio file.
 
 ## SandalQuest API Tech Stack
 

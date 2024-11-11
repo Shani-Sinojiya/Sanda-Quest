@@ -3,12 +3,26 @@ import numpy as np
 import torch
 import speech_recognition as sr
 from app.utils import tokenize_text, generate_answer, speak_answer
-from app.config import OUTPUT_DIR
+from app.config import OUTPUT_DIR, UPLOAD_DIR
+import uuid
+
+# convert other audio formats to wav
+
+
+def convert_to_wav(file_path: str) -> str:
+    new_file_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4().hex}.wav")
+    os.system(
+        f"ffmpeg -i {file_path} -acodec pcm_s16le -ac 1 -ar 16000 {new_file_path}")
+    return new_file_path
 
 
 def recognize_audio(file_path: str):
     recognizer = sr.Recognizer()
+    if file_path.endswith(".wav") is not True:
+        file_path = convert_to_wav(file_path)
+
     audio_file = sr.AudioFile(file_path)
+
     with audio_file as source:
         audio = recognizer.record(source)
     try:

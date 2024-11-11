@@ -4,14 +4,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   Animated,
   Easing,
 } from "react-native";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
 
 export default function AudioCommandAssistant() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -65,7 +63,7 @@ export default function AudioCommandAssistant() {
       });
 
       const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.LOW_QUALITY
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
       setRecording(recording);
       setIsRecording(true);
@@ -84,6 +82,8 @@ export default function AudioCommandAssistant() {
     setRecording(null);
 
     if (uri) {
+      console.log("Recording stopped and saved at", uri);
+      addMessage("Audio command recorded", "ai");
       await sendAudioToBackend(uri);
     }
   }
@@ -93,17 +93,31 @@ export default function AudioCommandAssistant() {
     addMessage("Processing your audio command...", "ai");
 
     try {
-      const response = await fetch(uri);
-      const audioBlob = await response.blob();
-
-      const formData = new FormData();
-      formData.append("audio_file", audioBlob, "audio.wav");
-
-      const backendResponse = await fetch("http://localhost:8000/predict", {
-        method: "POST",
-        body: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+      // get the audio data from the file
+      // get file from file system
+      const file = await fetch(uri);
+      const fileBlob = await file.blob();
+      const fileReader = new FileReader();
+      const audio_data = new Promise((resolve, reject) => {
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+        fileReader.onerror = reject;
+        fileReader.readAsDataURL(fileBlob);
       });
+
+      const backendResponse = await fetch(
+        "http://192.168.139.47:8000/predict",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            audio_data: await audio_data,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!backendResponse.ok) {
         throw new Error("Network response was not ok");
@@ -111,9 +125,15 @@ export default function AudioCommandAssistant() {
 
       const data = await backendResponse.json();
 
-      if (data.audioResponse) {
+      if (data.error) {
+        addMessage(data.error, "ai");
+      }
+
+      if (data.audio_file_url && data.answer) {
         addMessage(data.answer, "ai");
-        await playAudioResponse(data.audio_file_url);
+        await playAudioResponse(
+          "http://192.168.139.47:8000" + data.audio_file_url
+        );
       } else {
         addMessage("Received a response, but no audio was provided.", "ai");
       }
@@ -128,10 +148,23 @@ export default function AudioCommandAssistant() {
     }
   }
 
-  async function playAudioResponse(audiourl: string) {
+  async function playAudioResponse(uri: string) {
     try {
-      const response = await fetch(audiourl);
-      const audioBase64 = (await response.blob()).text();
+      const res = await fetch(uri);
+
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const audioBlob = await res.blob();
+      const audioBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(audioBlob);
+      });
 
       const audioUri = `data:audio/mp3;base64,${audioBase64}`;
       const { sound: newSound } = await Audio.Sound.createAsync({
@@ -167,8 +200,7 @@ export default function AudioCommandAssistant() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" hidden />
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>SandalQuest Audio Assistant</Text>
       </View>
@@ -219,7 +251,7 @@ export default function AudioCommandAssistant() {
           {isRecording ? "Recording... Tap to stop" : "Tap to record command"}
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
