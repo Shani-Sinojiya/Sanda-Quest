@@ -139,7 +139,7 @@ This project aims to document and provide access to indigenous knowledge of sand
 ## Project Links
 
 - [GitHub Repository](https://github.com/Shani-Sinojiya/SandalQuest.git)
-- [Youtube Video](https://www.youtube.com/watch?v=)
+- [Youtube Video](https://youtu.be/L-61dN3lKWc)
 - [Presentation Slides](./assets/SandalQuest.pptx)
 - [Project Documentation](./assets/SandalQuest.pdf)
 
