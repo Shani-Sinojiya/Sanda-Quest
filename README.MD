@@ -76,7 +76,7 @@ The dataset consists of Kannada audio files focused on sandalwood cultivation:
 
 #### More Details:
 
-[Task 1 Details](./Task%201/README.md)
+[Task 1 Details](./Task%201/README.MD)
 
 ### Task 2: Speech-based Question-Answering System
 
@@ -97,7 +97,7 @@ The dataset consists of Kannada audio files focused on sandalwood cultivation:
 
 #### More Details:
 
-[Task 2 Details](./Task%202/README.md)
+[Task 2 Details](./Task%202/README.MD)
 
 ## Pipeline Architecture
 
